@@ -46,17 +46,16 @@ export const IndexView = () => {
 
     const handleCheck = (e ) => {
         let filteredList
-        if (e.target.name === "type"){
-        
-         filteredList = pokeList.filter((obj)=> {
-            return obj.type.includes(e.target.id)
-        })}
+        // need to account for uncheck when updating the filtered list
+        // hardkey the different types?  can then just pass state through a filter on render
+        // use useeffect to handle the filter render?
+        // tie filters to state?
+        let updateType = e.target.name === "type" ? "type" : "weaknesses"
 
-        if (e.target.name === "weakness"){
-        
-         filteredList = pokeList.filter((obj)=> {
-            return obj.weaknesses.includes(e.target.id)
-        })}
+        filteredList = pokeList.filter(obj => {
+            return obj[updateType].includes(e.target.id)
+        })
+       
 
         updatePokeList(filteredList)
     }
@@ -134,3 +133,15 @@ export const IndexView = () => {
 
 }
 
+ 
+        // if (e.target.name === "type"){
+        
+        //  filteredList = pokeList.filter((obj)=> {
+        //     return obj.type.includes(e.target.id)
+        // })}
+
+        // if (e.target.name === "weakness"){
+        
+        //  filteredList = pokeList.filter((obj)=> {
+        //     return obj.weaknesses.includes(e.target.id)
+        // })}
