@@ -89,7 +89,7 @@ export const IndexView = () => {
 
             return (
             <label key={weakness} htmlFor={weakness}> {weakness}
-            <input type="checkbox" id={weakness} name="weakness"/>
+            <input type="checkbox" id={weakness} name="weakness" onChange={(e)=>handleCheck(e)}/>
             </label>
             )
 
