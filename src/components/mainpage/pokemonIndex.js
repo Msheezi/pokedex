@@ -1,147 +1,155 @@
-
-import Axios from 'axios'
-import React, {useState, useEffect} from 'react'
-import {PokeCard} from './pokeCard'
-
-
+import Axios from "axios";
+import React, { useState, useEffect } from "react";
+import { PokeCard } from "./pokeCard";
+import { types as types1, weaknesses } from "./pokeAttributes";
+// console.log(types1);
 export const IndexView = () => {
-    const [pokeList, updatePokeList] = useState([])
-    const [searchString, updateSearchString] = useState("")
+  const [pokeList, setPokeList] = useState([]);
+  const [renderList, setRenderList] = useState([]);
+  const [searchString, setSearchString] = useState("");
+  const [types, setTypes] = useState(types1);
+  const [weakness, setWeakness] = useState(weaknesses);
 
-    const fetchPokemon = async () => {
-            let data = await Axios.get(`https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`)
-            updatePokeList(data.data.pokemon)
-        } 
+  const fetchPokemon = async () => {
+    let data = await Axios.get(
+      `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
+    );
 
-    useEffect(  () => {
-        fetchPokemon()
-    },[])
+    setPokeList(data.data.pokemon);
+    setRenderList(data.data.pokemon);
+  };
 
-    let pokemons = pokeList.map(pokeObj => (
-        <PokeCard 
-            key={pokeObj.id}
-            pokeObj={pokeObj}/>
-    ))
+  useEffect(() => {
+    fetchPokemon();
+  }, []);
 
-    const handleChange = (e) => {
-        updateSearchString(e.target.value)
-    }
+  useEffect(() => {
+    let regex = new RegExp(searchString, "gi");
 
-    // use regex to filter pokemon list by search string and update state
-    const handleSubmit = () => {
-        let regex = new RegExp(searchString, "gi")
-        
-        let searchResults = pokeList.filter(({name}) => {
-            return regex.test(name)
-        })
-        
-        updatePokeList(searchResults)
-    }
+    const trueTypes = Object.keys(types).filter((key) => types[key]);
+    // console.log(types);
+    const trueWeakness = Object.keys(weakness).filter((key) => weakness[key]);
+    // console.log(trueTypes);
+    // console.log(trueWeakness);
 
-    /*
-        need a function for filtering pokemon list
-        need a function to get all types and weaknesses from list
-        need a handle for if the list is empty
-    */ 
+    let filteredList = pokeList.filter((poke) => {
+      let resA = poke.type.some((type) => {
+        // console.log(poke);
+        // console.log(trueTypes.includes(type));
+        return trueTypes.includes(type);
+      });
+      let resB = poke.weaknesses.some((weakness) => {
+        // as written
+        return trueWeakness.includes(weakness);
+      });
+      let resC = regex.test(poke.name);
+      //   console.log(resA, resB);
 
-    const handleCheck = (e ) => {
-        let filteredList
-        // need to account for uncheck when updating the filtered list
-        // hardkey the different types?  can then just pass state through a filter on render
-        // use useeffect to handle the filter render?
-        // tie filters to state?
-        let updateType = e.target.name === "type" ? "type" : "weaknesses"
+      if (!trueWeakness.length && !trueTypes.length && !searchString)
+        return true;
+      //no entries
+      else if (!trueWeakness.length && !searchString) return resA;
+      // only type
+      else if (!trueTypes.length && !searchString) return resB;
+      // only weakness
+      else if (!trueTypes.length && !trueWeakness.length) return resC;
+      // only searchstring
+      else if (!searchString) return resA && resB;
+      // type and weakness
+      else if (!trueWeakness.length) return resA && resC;
+      //type and searchstring
+      else if (!trueTypes.length) return resB && resC;
+      //weakness and searchstring
+      else return resA && resB && resC; //all 3
 
-        filteredList = pokeList.filter(obj => {
-            return obj[updateType].includes(e.target.id)
-        })
-       
+      //6 cases
+    });
+    // console.log(filteredList);
+    setRenderList(filteredList);
+  }, [types, weakness, searchString]);
 
-        updatePokeList(filteredList)
-    }
+  let pokemons = renderList.map((pokeObj) => (
+    <PokeCard key={pokeObj.id} pokeObj={pokeObj} />
+  ));
 
-    const renderTypes = () => {
-        let types = new Set()
-        pokeList.forEach(({type}) => {
-           type.forEach(ele=> types.add(ele))
-        })
+  const renderTypes = () => {
+    let typeList = Object.keys(types).map((type) => {
+      return (
+        <label key={type} htmlFor={type}>
+          {" "}
+          {type}
+          <input
+            type="checkbox"
+            id={type}
+            name="type"
+            onChange={(e) => {
+              //   console.log(e.target, e.target.id);
 
-        let typeList = [...types].map(type => {
+              const newValue = !types[e.target.id];
+              //   console.log(types);
+              let temp = { ...types, [e.target.id]: newValue };
+              console.log(temp);
+              setTypes(temp);
+            }}
+          />
+        </label>
+      );
+    });
+    return typeList;
+  };
 
-            return (
-            <label key={type} htmlFor={type}> {type}
-            <input type="checkbox" id={type} name="type" onChange={(e)=>handleCheck(e)}/>
-            </label>
-            )
+  const renderWeaknesses = () => {
+    let weaknessList = Object.keys(weakness).map((ele) => {
+      return (
+        <label key={ele} htmlFor={ele}>
+          {" "}
+          {ele}
+          <input
+            type="checkbox"
+            id={ele}
+            name="weakness"
+            onChange={(e) => {
+              const newWeaknesses = !weakness[e.target.id];
+              setWeakness({ ...weakness, [e.target.id]: newWeaknesses });
+            }}
+          />
+        </label>
+      );
+    });
+    return weaknessList;
+  };
 
-        })
-         return typeList   
-    }  
-          
-     const renderWeaknesses = () => {
-        let weakness = new Set()
-        pokeList.forEach(({weaknesses}) => {
-           weaknesses.forEach(ele=> weakness.add(ele))
-        })
-
-        let weaknessList = [...weakness].map(weakness => {
-
-            return (
-            <label key={weakness} htmlFor={weakness}> {weakness}
-            <input type="checkbox" id={weakness} name="weakness" onChange={(e)=>handleCheck(e)}/>
-            </label>
-            )
-
-        })
-         return weaknessList   
-    }
-    
-
-    /*
+  /*
             length of array is total list 
             10 per page 
     */
-    //name, num, type, weaknesses 
-        if (pokeList){
-            let filterTypes = renderTypes()
-            let filterWeaknesses = renderWeaknesses()
-            return (
-                
-                <div>
-                    <p>Types:</p>
-                    <div>
-                        {filterTypes}
-                        
-                    </div>
-                    <div> 
-                        <p>Weaknesses:</p> 
-                        {filterWeaknesses}
-                    </div>
-                    <label> Search For Pokemon: 
-
-                    <input type="text" value={searchString} onChange={e=>handleChange(e)}/>
-                    </label>
-                    <button onClick={handleSubmit}>Search</button>
-                    <button onClick={()=>fetchPokemon()}>Clear Search</button>
-               {pokemons}
-             </div>
-        )
-    } else {
-        return ""
-    }
-
-
-}
-
- 
-        // if (e.target.name === "type"){
-        
-        //  filteredList = pokeList.filter((obj)=> {
-        //     return obj.type.includes(e.target.id)
-        // })}
-
-        // if (e.target.name === "weakness"){
-        
-        //  filteredList = pokeList.filter((obj)=> {
-        //     return obj.weaknesses.includes(e.target.id)
-        // })}
+  //name, num, type, weaknesses
+  if (pokeList) {
+    let filterTypes = renderTypes();
+    let weaknesses = renderWeaknesses();
+    return (
+      <div>
+        <p>Types:</p>
+        <div>{filterTypes}</div>
+        <div>
+          <p>Weaknesses:</p>
+          {weaknesses}
+        </div>
+        <label>
+          {" "}
+          Search For Pokemon:
+          <input
+            type="text"
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+          />
+        </label>
+        {/* <button onClick={(e) => setSearchString(e.target.value)}>Search</button> */}
+        <button onClick={() => fetchPokemon()}>Clear Search</button>
+        {pokemons}
+      </div>
+    );
+  } else {
+    return "";
+  }
+};
