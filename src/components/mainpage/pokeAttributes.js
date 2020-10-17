@@ -1,0 +1,9 @@
+const types = {
+
+
+}
+
+
+const weaknesses = {
+    
+}
