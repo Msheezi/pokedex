@@ -2,6 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
+import {Link} from "react-router-dom"
 
 const Container = styled.div`
     /* height: 20vh; */
@@ -31,10 +32,21 @@ const CardImage = styled.img`
     max-height: 120px;
 `
 
-export const PokeCard = ({pokeObj:{num, name, weaknesses, type, img}}) => {
+export const PokeCard = ( {pokeObj, pokeObj:{num, name, weaknesses, type, img}}) => {
     // weaknesses is an array of strings 
     // type is an array of strings
+    // onclick link to page passing in whole obj as a prop?
     return (
+        <Link 
+        // to="/details" 
+        to={{
+            pathname:"/details",
+            state:{
+                pokeObj
+            }
+        }}
+        style={{textDecoration: "none"}}>
+
         <Container>
             <CardItem>{name}</CardItem>
             <CardItem>{`# ${num}`}</CardItem>
@@ -43,6 +55,7 @@ export const PokeCard = ({pokeObj:{num, name, weaknesses, type, img}}) => {
             <CardItem>{`Weaknesses: ${weaknesses}`}</CardItem>
 
         </Container>
+        </Link>
 
 
     )

@@ -31,6 +31,7 @@ export const IndexView = () => {
     const trueWeakness = Object.keys(weakness).filter((key) => weakness[key]);
 
     let filteredList = pokeList.filter((poke) => {
+      // Additional filters added by adding another res and a logic test
       let resA = poke.type.some((type) => {
         return trueTypes.includes(type);
       });
@@ -63,7 +64,6 @@ export const IndexView = () => {
 
       //6 cases
     });
-    // console.log(filteredList);
     setRenderList(filteredList);
   }, [types, weakness, searchString]);
 
@@ -131,7 +131,12 @@ export const IndexView = () => {
       <SearchContainer>
 
           
-           <div style={{color: "white", textShadow:"2px 2px black", fontSize: "12pt",WebkitTextStroke:"1px white"}}>Search For Pokemon</div> 
+           <div style={{color: "white", 
+           textShadow:"2px 2px black", 
+           fontSize: "12pt",
+           WebkitTextStroke:"1px white"}}>
+             Search For Pokemon
+             </div> 
 
            <div>
             <input
@@ -142,12 +147,11 @@ export const IndexView = () => {
                 placeholder="Start Typing to Search..."
                 />
             </div>
-        {/* <button onClick={() => fetchPokemon()}>Clear Search</button> */}
-        <div style={{color: "white"}}>{`Displaying ${renderList.length} of ${pokeList.length}`}</div>
+          <div style={{color: "white"}}>{`Displaying ${renderList.length} of ${pokeList.length}`}</div>
         </SearchContainer>
         <PokemonContainer >
 
-        {pokemons}
+          {pokemons}
         </PokemonContainer>
       </Container>
     );
