@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { PokeCard } from "./pokeCard";
 import { types as types1, weaknesses } from "./pokeAttributes";
 import {Container,CheckboxContainer, SelectorsContainer, SearchContainer,StyledInput ,StyledLabel, PokemonContainer} from './indexStyles'
-// console.log(types1);
+
 export const IndexView = () => {
   const [pokeList, setPokeList] = useState([]);
   const [renderList, setRenderList] = useState([]);
@@ -76,24 +76,17 @@ export const IndexView = () => {
   const renderTypes = () => {
     let typeList = Object.keys(types).map((type) => {
       return (
-          
-
-        <CheckboxContainer>
-            <StyledLabel key={type} htmlFor={type}>
-                {" "}
-                {type}
-            </StyledLabel>
-            <StyledInput
-                type="checkbox"
-                id={type}
-                name="type"
-                onChange={(e) => {
-                    const newValue = !types[e.target.id];
-                    let temp = { ...types, [e.target.id]: newValue };
-                    console.log(temp);
-                    setTypes(temp);
-                }}
-                />
+        <CheckboxContainer selected={types[type]}
+          id={type}
+          name="type"
+          onClick={(e) => {
+              const newValue = !types[e.target.id];
+              let temp = { ...types, [e.target.id]: newValue };
+              console.log(temp);
+              setTypes(temp)
+          }}
+        >
+            {type}
         </CheckboxContainer>
             
       );
@@ -104,22 +97,16 @@ export const IndexView = () => {
   const renderWeaknesses = () => {
     let weaknessList = Object.keys(weakness).map((ele) => {
       return (
-        <CheckboxContainer>
-            <StyledLabel key={ele} htmlFor={ele} >
-                {" "}
-                {ele}
-            </StyledLabel>
-            <StyledInput
-                style={{margin: "auto"}}
-                    type="checkbox"
-                    id={ele}
-                    name="weakness"
-                    onChange={(e) => {
-                    const newWeaknesses = !weakness[e.target.id];
-                    setWeakness({ ...weakness, [e.target.id]: newWeaknesses });
-                    }}
-            />
+        <CheckboxContainer
+          selected={weakness[ele]}
         
+                id={ele}
+                name="weakness"
+                onClick={(e) => {
+                const newWeaknesses = !weakness[e.target.id];
+                setWeakness({ ...weakness, [e.target.id]: newWeaknesses });
+                }}
+        >{ele}
         </CheckboxContainer>
       );
     });
@@ -129,28 +116,28 @@ export const IndexView = () => {
  
   if (pokeList) {
     let filterTypes = renderTypes();
-    let weaknesses = renderWeaknesses();
+    let weaknessTypes = renderWeaknesses();
     
     return (
     <Container>
       
       <SelectorsContainer gridArea={"types"}>
-        <h2>Types:</h2>
+        <h2 style={{color: "white"}}>Types</h2>
         
         {filterTypes}
       </SelectorsContainer>
 
         <SelectorsContainer gridArea={"weaknesses"}>
-            <h2>Weaknesses:</h2>
+            <h2 style={{color: "white"}}>Weaknesses</h2>
             
-            {weaknesses} 
+            {weaknessTypes} 
         </SelectorsContainer>
 
         <SearchContainer>
 
             <label>
             {" "}
-            Search For Pokemon:
+            Search For Pokemon
             <input
 
             
@@ -160,8 +147,8 @@ export const IndexView = () => {
                 />
             </label>
         <button onClick={() => fetchPokemon()}>Clear Search</button>
+        <div style={{color: "white"}}>{`Displaying ${renderList.length} of ${pokeList.length}`}</div>
         </SearchContainer>
-        {/* <button onClick={(e) => setSearchString(e.target.value)}>Search</button> */}
         <PokemonContainer >
 
         {pokemons}

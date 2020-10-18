@@ -15,13 +15,20 @@ export const Container = styled.div`
 
 export const CheckboxContainer = styled.div`
    width: 5vw;
+   min-width:60px;
    height: 5vh;
+   min-height: 45px;
    border: 0.5px solid black;
-    background-color:white;
+    /* background-color:white; */
+    background-color:${(props)=> props.selected ? "lightblue" : "white"};
     border-radius: 5px;
     display: flex;
     flex-direction: row;
     flex-direction: column;
+    margin: 2px;
+    text-align: center;
+    line-height: 5vh;
+    cursor: pointer;
     
     &:hover{
         background-color: lightblue;
@@ -36,7 +43,7 @@ export const SelectorsContainer = styled.div`
     align-items:center;
     flex-wrap: wrap;
     width: 100%;
-    height: 10vh;
+    /* height: 10vh; */
     display: flex;
     grid-area: ${(props)=> props.gridArea};
 

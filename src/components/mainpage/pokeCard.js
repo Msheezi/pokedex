@@ -6,6 +6,7 @@ import styled from 'styled-components'
 const Container = styled.div`
     /* height: 20vh; */
     width: 250px;
+    padding-top: 5px;
     border: 0.5px solid black;
     background-color:white;
     border-radius: 5px;
@@ -24,6 +25,7 @@ const Container = styled.div`
 
 const CardItem = styled.div`
     font-size: 12pt;
+    word-wrap: break-word;
 `
 const CardImage = styled.img`
     max-height: 120px;
