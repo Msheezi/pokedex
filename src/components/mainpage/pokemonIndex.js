@@ -2,6 +2,7 @@ import Axios from "axios";
 import React, { useState, useEffect } from "react";
 import { PokeCard } from "./pokeCard";
 import { types as types1, weaknesses } from "./pokeAttributes";
+import {Container,CheckboxContainer, SelectorsContainer, SearchContainer,StyledInput ,StyledLabel, PokemonContainer} from './indexStyles'
 // console.log(types1);
 export const IndexView = () => {
   const [pokeList, setPokeList] = useState([]);
@@ -11,12 +12,12 @@ export const IndexView = () => {
   const [weakness, setWeakness] = useState(weaknesses);
 
   const fetchPokemon = async () => {
-    let data = await Axios.get(
+    let{ data:{pokemon} }= await Axios.get(
       `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
     );
 
-    setPokeList(data.data.pokemon);
-    setRenderList(data.data.pokemon);
+    setPokeList(pokemon);
+    setRenderList(pokemon);
   };
 
   useEffect(() => {
@@ -75,24 +76,26 @@ export const IndexView = () => {
   const renderTypes = () => {
     let typeList = Object.keys(types).map((type) => {
       return (
-        <label key={type} htmlFor={type}>
-          {" "}
-          {type}
-          <input
-            type="checkbox"
-            id={type}
-            name="type"
-            onChange={(e) => {
-              //   console.log(e.target, e.target.id);
+          
 
-              const newValue = !types[e.target.id];
-              //   console.log(types);
-              let temp = { ...types, [e.target.id]: newValue };
-              console.log(temp);
-              setTypes(temp);
-            }}
-          />
-        </label>
+        <CheckboxContainer>
+            <StyledLabel key={type} htmlFor={type}>
+                {" "}
+                {type}
+            </StyledLabel>
+            <StyledInput
+                type="checkbox"
+                id={type}
+                name="type"
+                onChange={(e) => {
+                    const newValue = !types[e.target.id];
+                    let temp = { ...types, [e.target.id]: newValue };
+                    console.log(temp);
+                    setTypes(temp);
+                }}
+                />
+        </CheckboxContainer>
+            
       );
     });
     return typeList;
@@ -101,53 +104,69 @@ export const IndexView = () => {
   const renderWeaknesses = () => {
     let weaknessList = Object.keys(weakness).map((ele) => {
       return (
-        <label key={ele} htmlFor={ele}>
-          {" "}
-          {ele}
-          <input
-            type="checkbox"
-            id={ele}
-            name="weakness"
-            onChange={(e) => {
-              const newWeaknesses = !weakness[e.target.id];
-              setWeakness({ ...weakness, [e.target.id]: newWeaknesses });
-            }}
-          />
-        </label>
+        <CheckboxContainer>
+            <StyledLabel key={ele} htmlFor={ele} >
+                {" "}
+                {ele}
+            </StyledLabel>
+            <StyledInput
+                style={{margin: "auto"}}
+                    type="checkbox"
+                    id={ele}
+                    name="weakness"
+                    onChange={(e) => {
+                    const newWeaknesses = !weakness[e.target.id];
+                    setWeakness({ ...weakness, [e.target.id]: newWeaknesses });
+                    }}
+            />
+        
+        </CheckboxContainer>
       );
     });
     return weaknessList;
   };
 
-  /*
-            length of array is total list 
-            10 per page 
-    */
-  //name, num, type, weaknesses
+ 
   if (pokeList) {
     let filterTypes = renderTypes();
     let weaknesses = renderWeaknesses();
+    
     return (
-      <div>
-        <p>Types:</p>
-        <div>{filterTypes}</div>
-        <div>
-          <p>Weaknesses:</p>
-          {weaknesses}
-        </div>
-        <label>
-          {" "}
-          Search For Pokemon:
-          <input
-            type="text"
-            value={searchString}
-            onChange={(e) => setSearchString(e.target.value)}
-          />
-        </label>
-        {/* <button onClick={(e) => setSearchString(e.target.value)}>Search</button> */}
+    <Container>
+      
+      <SelectorsContainer gridArea={"types"}>
+        <h2>Types:</h2>
+        
+        {filterTypes}
+      </SelectorsContainer>
+
+        <SelectorsContainer gridArea={"weaknesses"}>
+            <h2>Weaknesses:</h2>
+            
+            {weaknesses} 
+        </SelectorsContainer>
+
+        <SearchContainer>
+
+            <label>
+            {" "}
+            Search For Pokemon:
+            <input
+
+            
+                type="text"
+                value={searchString}
+                onChange={(e) => setSearchString(e.target.value)}
+                />
+            </label>
         <button onClick={() => fetchPokemon()}>Clear Search</button>
+        </SearchContainer>
+        {/* <button onClick={(e) => setSearchString(e.target.value)}>Search</button> */}
+        <PokemonContainer >
+
         {pokemons}
-      </div>
+        </PokemonContainer>
+      </Container>
     );
   } else {
     return "";
