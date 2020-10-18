@@ -2,7 +2,7 @@ import Axios from "axios";
 import React, { useState, useEffect } from "react";
 import { PokeCard } from "./pokeCard";
 import { types as types1, weaknesses } from "./pokeAttributes";
-import {Container,CheckboxContainer, SelectorsContainer, SearchContainer,StyledInput ,StyledLabel, PokemonContainer} from './indexStyles'
+import {Container,CheckboxContainer, SelectorsContainer, SearchContainer, PokemonContainer} from './indexStyles'
 
 export const IndexView = () => {
   const [pokeList, setPokeList] = useState([]);
@@ -65,7 +65,7 @@ export const IndexView = () => {
       //6 cases
     });
     setRenderList(filteredList);
-  }, [types, weakness, searchString]);
+  }, [types, weakness, searchString, pokeList]);
 
   let pokemons = renderList.map((pokeObj) => (
     <PokeCard key={pokeObj.id} pokeObj={pokeObj} />

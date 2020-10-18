@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import {IndexView} from './components/mainpage/pokemonIndex'
 import {PokeDetail} from './components/detailview/pokeDetail'
