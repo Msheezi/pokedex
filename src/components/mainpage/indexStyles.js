@@ -18,7 +18,8 @@ export const CheckboxContainer = styled.div`
    min-width:60px;
    height: 5vh;
    min-height: 45px;
-   border: 0.5px solid black;
+   /* border: 0.5px solid black; */
+   border: ${(props)=> props.selected ? "1px solid #55C2F1": "none"};
     /* background-color:white; */
     background-color:${(props)=> props.selected ? "lightblue" : "white"};
     border-radius: 5px;

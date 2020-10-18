@@ -28,40 +28,38 @@ export const IndexView = () => {
     let regex = new RegExp(searchString, "gi");
 
     const trueTypes = Object.keys(types).filter((key) => types[key]);
-    // console.log(types);
     const trueWeakness = Object.keys(weakness).filter((key) => weakness[key]);
-    // console.log(trueTypes);
-    // console.log(trueWeakness);
 
     let filteredList = pokeList.filter((poke) => {
       let resA = poke.type.some((type) => {
-        // console.log(poke);
-        // console.log(trueTypes.includes(type));
         return trueTypes.includes(type);
       });
       let resB = poke.weaknesses.some((weakness) => {
-        // as written
         return trueWeakness.includes(weakness);
       });
       let resC = regex.test(poke.name);
-      //   console.log(resA, resB);
-
-      if (!trueWeakness.length && !trueTypes.length && !searchString)
-        return true;
-      //no entries
-      else if (!trueWeakness.length && !searchString) return resA;
-      // only type
-      else if (!trueTypes.length && !searchString) return resB;
-      // only weakness
-      else if (!trueTypes.length && !trueWeakness.length) return resC;
-      // only searchstring
-      else if (!searchString) return resA && resB;
-      // type and weakness
-      else if (!trueWeakness.length) return resA && resC;
-      //type and searchstring
-      else if (!trueTypes.length) return resB && resC;
-      //weakness and searchstring
-      else return resA && resB && resC; //all 3
+      
+      let resAll = true 
+      if(trueTypes.length) resAll = resAll && resA
+      if (trueWeakness.length) resAll = resAll && resB
+      if (searchString.length) resAll = resAll && resC
+      return resAll
+      // if (!trueWeakness.length && !trueTypes.length && !searchString)
+      //   return true;
+      // //no entries
+      // else if (!trueWeakness.length && !searchString) return resA;
+      // // only type
+      // else if (!trueTypes.length && !searchString) return resB;
+      // // only weakness
+      // else if (!trueTypes.length && !trueWeakness.length) return resC;
+      // // only searchstring
+      // else if (!searchString) return resA && resB;
+      // // type and weakness
+      // else if (!trueWeakness.length) return resA && resC;
+      // //type and searchstring
+      // else if (!trueTypes.length) return resB && resC;
+      // //weakness and searchstring
+      // else return resA && resB && resC; //all 3
 
       //6 cases
     });
@@ -79,11 +77,10 @@ export const IndexView = () => {
         <CheckboxContainer selected={types[type]}
           id={type}
           name="type"
+          key={type}
           onClick={(e) => {
               const newValue = !types[e.target.id];
-              let temp = { ...types, [e.target.id]: newValue };
-              console.log(temp);
-              setTypes(temp)
+              setTypes({ ...types, [e.target.id]: newValue })
           }}
         >
             {type}
@@ -99,7 +96,7 @@ export const IndexView = () => {
       return (
         <CheckboxContainer
           selected={weakness[ele]}
-        
+                key={ele}
                 id={ele}
                 name="weakness"
                 onClick={(e) => {
@@ -123,30 +120,29 @@ export const IndexView = () => {
       
       <SelectorsContainer gridArea={"types"}>
         <h2 style={{color: "white"}}>Types</h2>
-        
         {filterTypes}
       </SelectorsContainer>
 
-        <SelectorsContainer gridArea={"weaknesses"}>
-            <h2 style={{color: "white"}}>Weaknesses</h2>
-            
-            {weaknessTypes} 
-        </SelectorsContainer>
+      <SelectorsContainer gridArea={"weaknesses"}>
+        <h2 style={{color: "white"}}>Weaknesses</h2>
+        {weaknessTypes} 
+      </SelectorsContainer>
 
-        <SearchContainer>
+      <SearchContainer>
 
-            <label>
-            {" "}
-            Search For Pokemon
+          
+           <div style={{color: "white", textShadow:"2px 2px black", fontSize: "12pt",WebkitTextStroke:"1px white"}}>Search For Pokemon</div> 
+
+           <div>
             <input
-
-            
+                style={{margin: "0px 5px"}}
                 type="text"
                 value={searchString}
                 onChange={(e) => setSearchString(e.target.value)}
+                placeholder="Start Typing to Search..."
                 />
-            </label>
-        <button onClick={() => fetchPokemon()}>Clear Search</button>
+            </div>
+        {/* <button onClick={() => fetchPokemon()}>Clear Search</button> */}
         <div style={{color: "white"}}>{`Displaying ${renderList.length} of ${pokeList.length}`}</div>
         </SearchContainer>
         <PokemonContainer >
