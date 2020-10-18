@@ -10,7 +10,7 @@ const Container = styled.div`
     grid-template-areas: 
     "link title ."
     "img details ."
-    "next strwk prev";
+    "prev strwk next";
     grid-template-columns: 1fr 4fr 1fr;
     grid-template-rows: 50px 300px 250px;
   
@@ -77,7 +77,13 @@ const StrengthsContainer = styled(DisplayItem)`
     justify-content: center;
     align-items: flex-start;
     background-color: white;
+    margin: 10px;
+    
 
+`
+const EvolutionContainer = styled(StrengthsContainer)`
+    line-height: 250px;
+    font-size: 12pt;
 `
 
 const DetailsItem = styled.div`
@@ -87,11 +93,20 @@ const DetailsItem = styled.div`
 `
 
 export const PokeDetail = ({location:{state:{pokeObj}}}) => {
-    const {name, num, img, type,  weaknesses, height, weight} = pokeObj
+    const {name, num, img, type,  weaknesses, height, weight, prev_evolution, next_evolution} = pokeObj
+
+    let previous = prev_evolution ? prev_evolution.map(({name})=>(
+    <EvolutionContainer key={name} gridarea="prev">{`Previous: ${name}`}</EvolutionContainer>
+    )) : ""
+
+    let next = next_evolution ? next_evolution.map(({name})=>(
+    <EvolutionContainer key={name} gridarea="next">{`Next: ${name}`}</EvolutionContainer>
+    )) : ""
 
     let displayType = type.map(singleType=> (
         <li key={singleType}>{singleType}</li>
     ))
+
     let displayWeakness = weaknesses.map(singleWeakness=> (
         <li key={singleWeakness}>{singleWeakness}</li>
     ))
@@ -130,6 +145,8 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
                 </List>
 
             </StrengthsContainer>
+            {previous}
+            {next}
 
         </Container>
 

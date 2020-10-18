@@ -45,7 +45,7 @@ export const PokeCard = ( {pokeObj, pokeObj:{num, name, weaknesses, type, img}})
                 pokeObj
             }
         }}
-        style={{textDecoration: "none"}}>
+        style={{textDecoration: "none", color: "black"}}>
 
         <Container>
             <CardItem>{name}</CardItem>
