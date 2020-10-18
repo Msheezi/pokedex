@@ -34,6 +34,8 @@ const Title = styled(DisplayItem)`
 
 const StyledLink = styled(Link)`
     grid-area: ${(props)=> props.gridarea};
+    color: white;
+    font-size: 1.5em;
 `
 
 const StyledImg = styled.img`
@@ -116,7 +118,7 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
         <Container>
             <div gridarea={"link"}>
 
-                <StyledLink to="/" >Back to List</StyledLink>
+                <StyledLink to="/pokedex" >Back to List</StyledLink>
             </div>
             <Title gridarea={"title"} >{name}</Title>
             <DetailsContainer gridarea="details">

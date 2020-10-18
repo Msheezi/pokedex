@@ -51,11 +51,7 @@ export const SelectorsContainer = styled.div`
 `
 
 export const SearchContainer = styled(SelectorsContainer)`
-    
-    /* width: 100%; */
     height: 10vh;
-    
-   
 `
 
 export const StyledLabel = styled.label`

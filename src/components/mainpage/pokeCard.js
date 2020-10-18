@@ -5,7 +5,6 @@ import styled from 'styled-components'
 import {Link} from "react-router-dom"
 
 const Container = styled.div`
-    /* height: 20vh; */
     width: 250px;
     padding-top: 5px;
     border: 0.5px solid black;
@@ -33,13 +32,9 @@ const CardImage = styled.img`
 `
 
 export const PokeCard = ( {pokeObj, pokeObj:{num, name, weaknesses, type, img}}) => {
-    // weaknesses is an array of strings 
-    // type is an array of strings
-    // onclick link to page passing in whole obj as a prop?
     return (
         <Link 
-        // to="/details" 
-        to={{
+            to={{
             pathname:"/details",
             state:{
                 pokeObj

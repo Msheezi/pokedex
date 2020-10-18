@@ -129,8 +129,6 @@ export const IndexView = () => {
       </SelectorsContainer>
 
       <SearchContainer>
-
-          
            <div style={{color: "white", 
            textShadow:"2px 2px black", 
            fontSize: "12pt",
