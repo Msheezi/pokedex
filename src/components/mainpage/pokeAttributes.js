@@ -2,6 +2,7 @@ export const types = {
   Grass: false,
   Poison: false,
   Fire: false,
+  Flying: false,
   Water: false,
   Bug: false,
   Normal: false,
