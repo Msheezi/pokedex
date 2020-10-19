@@ -32,37 +32,23 @@ export const IndexView = () => {
 
     let filteredList = pokeList.filter((poke) => {
       // Additional filters added by adding another res and a logic test
-      let resA = poke.type.some((type) => {
-        return trueTypes.includes(type);
-      });
-      let resB = poke.weaknesses.some((weakness) => {
-        return trueWeakness.includes(weakness);
+      let resA = trueTypes.every((type)=>{
+        return poke.type.includes(type)
+      })
+   
+      let resB = trueWeakness.every((weakness) => {
+        return poke.weaknesses.includes(weakness);
+        
       });
       let resC = regex.test(poke.name);
       
       let resAll = true 
+      console.log(resA)
       if(trueTypes.length) resAll = resAll && resA
       if (trueWeakness.length) resAll = resAll && resB
       if (searchString.length) resAll = resAll && resC
       return resAll
-      // if (!trueWeakness.length && !trueTypes.length && !searchString)
-      //   return true;
-      // //no entries
-      // else if (!trueWeakness.length && !searchString) return resA;
-      // // only type
-      // else if (!trueTypes.length && !searchString) return resB;
-      // // only weakness
-      // else if (!trueTypes.length && !trueWeakness.length) return resC;
-      // // only searchstring
-      // else if (!searchString) return resA && resB;
-      // // type and weakness
-      // else if (!trueWeakness.length) return resA && resC;
-      // //type and searchstring
-      // else if (!trueTypes.length) return resB && resC;
-      // //weakness and searchstring
-      // else return resA && resB && resC; //all 3
-
-      //6 cases
+      
     });
     setRenderList(filteredList);
   }, [types, weakness, searchString, pokeList]);
@@ -119,17 +105,17 @@ export const IndexView = () => {
     <Container>
       
       <SelectorsContainer gridArea={"types"}>
-        <h2 style={{color: "white"}}>Types</h2>
+        <h2 style={{color: "#98ECDB"}}>Types</h2>
         {filterTypes}
       </SelectorsContainer>
 
       <SelectorsContainer gridArea={"weaknesses"}>
-        <h2 style={{color: "white"}}>Weaknesses</h2>
+        <h2 style={{color: "#98ECDB"}}>Weaknesses</h2>
         {weaknessTypes} 
       </SelectorsContainer>
 
       <SearchContainer>
-           <div style={{color: "white", 
+           <div style={{color: "#98ECDB", 
            textShadow:"2px 2px black", 
            fontSize: "12pt",
            WebkitTextStroke:"1px white"}}>
@@ -157,3 +143,38 @@ export const IndexView = () => {
     return "";
   }
 };
+
+
+ // if (!trueTypes.length) resA = false 
+    //   else if (trueTypes.length===1){
+    //     console.log(1)
+    //      resA = trueTypes.every((type) => {
+    //       return poke.type.includes(type);
+    //     })
+
+    //   }
+    //   else {
+    //     if(poke.type.length <2 ) return false
+    //     if(trueTypes.length > 2) return false
+    //     resA = poke.type.every((type)=>{
+    //       return trueTypes.includes(type)
+    //     })
+    //   }
+// if (!trueWeakness.length && !trueTypes.length && !searchString)
+      //   return true;
+      // //no entries
+      // else if (!trueWeakness.length && !searchString) return resA;
+      // // only type
+      // else if (!trueTypes.length && !searchString) return resB;
+      // // only weakness
+      // else if (!trueTypes.length && !trueWeakness.length) return resC;
+      // // only searchstring
+      // else if (!searchString) return resA && resB;
+      // // type and weakness
+      // else if (!trueWeakness.length) return resA && resC;
+      // //type and searchstring
+      // else if (!trueTypes.length) return resB && resC;
+      // //weakness and searchstring
+      // else return resA && resB && resC; //all 3
+
+      //6 cases
