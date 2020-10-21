@@ -104,13 +104,7 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
     const {pokemon} = useContext(Store)
         console.log(pokemon)
 
-    let previous = prev_evolution ? prev_evolution.map(({name})=>(
-    <EvolutionContainer key={name} gridarea="prev">{`Previous: ${name}`}</EvolutionContainer>
-    )) : ""
-
-    let next = next_evolution ? next_evolution.map(({name})=>(
-    <EvolutionContainer key={name} gridarea="next">{`Next: ${name}`}</EvolutionContainer>
-    )) : ""
+   
 
     let displayType = type.map(singleType=> (
         <li key={singleType}>{singleType}</li>
@@ -163,19 +157,26 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
                 </List>
 
             </StrengthsContainer>
+            
             <EvolutionContainer gridarea={"prev"}>
-
-           <EvolutionCard pokeObj={prevEvo} evoType="Previous Evolution" />
+                <EvolutionCard pokeObj={prevEvo} evoType="Previous Evolution" />
             </EvolutionContainer>
+            
             <EvolutionContainer gridarea={"next"}>
-
-           <EvolutionCard pokeObj={nextEvo} evoType="Next Evolution"/>
+                <EvolutionCard pokeObj={nextEvo} evoType="Next Evolution"/>
             </EvolutionContainer>
 
-            {/* {previous}
-            {next} */}
+            
 
         </Container>
 
     )
 }
+
+ // let previous = prev_evolution ? prev_evolution.map(({name})=>(
+    // <EvolutionContainer key={name} gridarea="prev">{`Previous: ${name}`}</EvolutionContainer>
+    // )) : ""
+
+    // let next = next_evolution ? next_evolution.map(({name})=>(
+    // <EvolutionContainer key={name} gridarea="next">{`Next: ${name}`}</EvolutionContainer>
+    // )) : ""

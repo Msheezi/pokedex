@@ -1,8 +1,9 @@
-import Axios from "axios";
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useContext  } from "react";
 import { PokeCard } from "./pokeCard";
 import { types as types1, weaknesses } from "./pokeAttributes";
 import {Container,CheckboxContainer, SelectorsContainer, SearchContainer, PokemonContainer} from './indexStyles'
+import {Store} from '../../store'
 
 export const IndexView = () => {
   const [pokeList, setPokeList] = useState([]);
@@ -10,19 +11,18 @@ export const IndexView = () => {
   const [searchString, setSearchString] = useState("");
   const [types, setTypes] = useState(types1);
   const [weakness, setWeakness] = useState(weaknesses);
+  const pokeStore = useContext(Store)
 
-  const fetchPokemon = async () => {
-    let{ data:{pokemon} }= await Axios.get(
-      `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
-    );
-
-    setPokeList(pokemon);
-    setRenderList(pokemon);
-  };
-
-  useEffect(() => {
-    fetchPokemon();
-  }, []);
+  // use context to reproduce pokelist previously set via remote api call
+  let tempList = Object.keys(pokeStore.pokemon).map(key => pokeStore.pokemon[key]).sort((a,b)=> {
+    const objA = a.id
+    const objB = b.id 
+    return  objA - objB
+  })
+ 
+  useEffect(()=> {
+    !pokeList.length && setPokeList(tempList)
+  }, [pokeList.length, tempList])
 
   useEffect(() => {
     let regex = new RegExp(searchString, "gi");
@@ -177,3 +177,19 @@ export const IndexView = () => {
       // else return resA && resB && resC; //all 3
 
       //6 cases
+
+
+
+  // const fetchPokemon = async () => {
+  //   let{ data:{pokemon} }= await Axios.get(
+  //     `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
+  //   );
+
+  //   setPokeList(pokemon);
+  //   setRenderList(pokemon);
+  // };
+
+
+  // useEffect(() => {
+  //   fetchPokemon();
+  // }, []);
