@@ -13,7 +13,7 @@ const Container = styled.div`
     "link title ."
     "img details ."
     "prev strwk next";
-    grid-template-columns: 1fr 4fr 1fr;
+    grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 50px 300px 250px;
   
 `
@@ -136,7 +136,7 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
 
                 <StyledLink to="/pokedex" >Back to List</StyledLink>
             </div>
-            <Title gridarea={"title"} >{name}</Title>
+            <Title gridarea={"title"} >{`${name} #${num}`}</Title>
             <DetailsContainer gridarea="details">
                 <h2>Details</h2>
                 <div style={{display: "flex", height: "200px", alignItems:"center", justifyContent:"center"}}>
@@ -146,7 +146,7 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
             </ImageContainer>
                 <div>
 
-                <DetailsItem>{`Number: ${num}`}</DetailsItem>
+                <DetailsItem>{`#${num}`}</DetailsItem>
                 <DetailsItem>{`Height: ${height}`}</DetailsItem>
                 <DetailsItem>{`Weight: ${weight}`}</DetailsItem>
                 </div>
