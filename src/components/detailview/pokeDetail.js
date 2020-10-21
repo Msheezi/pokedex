@@ -102,7 +102,7 @@ const DetailsItem = styled.div`
 export const PokeDetail = ({location:{state:{pokeObj}}}) => {
     const {name, num, img, type,  weaknesses, height, weight, prev_evolution, next_evolution} = pokeObj
     const {pokemon} = useContext(Store)
-
+    // window.history.replaceState(location,"",`/details/${name}`)
     let displayType = type.map(singleType=> (
         <li key={singleType}>{singleType}</li>
     ))
