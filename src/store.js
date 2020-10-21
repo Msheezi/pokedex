@@ -11,11 +11,13 @@ export function StoreProvider({children}){
         let {data} = await Axios.get(
             `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
             )
+
+            
             console.log(data)
             updateState(data)
     }
     useEffect(()=>{
-        state.length===0 && fetchPokemon()
+        state.length  && fetchPokemon()
     })
 
     return (

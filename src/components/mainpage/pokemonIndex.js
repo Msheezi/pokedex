@@ -43,7 +43,6 @@ export const IndexView = () => {
       let resC = regex.test(poke.name);
       
       let resAll = true 
-      console.log(resA)
       if(trueTypes.length) resAll = resAll && resA
       if (trueWeakness.length) resAll = resAll && resB
       if (searchString.length) resAll = resAll && resC
