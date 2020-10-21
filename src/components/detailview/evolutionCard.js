@@ -4,9 +4,6 @@ import {Link} from "react-router-dom"
 
 export const EvolutionCard = ({pokeObj, evoType}) => {
     const {name, img} = pokeObj ? pokeObj : {name: "No Evolution", img:""}
-    console.log(pokeObj)
-    // console.log(gridarea)
-    
     return (
         <Link  to={{
             pathname:"/details",

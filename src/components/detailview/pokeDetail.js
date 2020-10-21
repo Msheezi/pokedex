@@ -102,9 +102,6 @@ const DetailsItem = styled.div`
 export const PokeDetail = ({location:{state:{pokeObj}}}) => {
     const {name, num, img, type,  weaknesses, height, weight, prev_evolution, next_evolution} = pokeObj
     const {pokemon} = useContext(Store)
-        console.log(pokemon)
-
-   
 
     let displayType = type.map(singleType=> (
         <li key={singleType}>{singleType}</li>
@@ -118,11 +115,9 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
     if (prev_evolution){
 
          prevEvo = pokemon[prev_evolution[0].num]
-        // console.log(prevEvo)
     }
     if(next_evolution)
      nextEvo = pokemon[next_evolution[0].num]
-        // console.log(nextEvo)
     
     return(
         <Container>
