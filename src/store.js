@@ -11,17 +11,18 @@ export function StoreProvider({children}){
         let {data} = await Axios.get(
             `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
             )
-
             
-            console.log(data)
-            updateState(data)
+            let pokemonsObj = {}
+            data.pokemon.forEach(pokemon => pokemonsObj[pokemon.num] = pokemon)
+            
+            updateState(pokemonsObj)
     }
     useEffect(()=>{
-        state.length  && fetchPokemon()
+        !Object.keys(state).length  && fetchPokemon()
     })
 
     return (
-        <Store.Provider value={state}>
+        <Store.Provider value={{pokemon: state}}>
             {children}
         </Store.Provider>
     )

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {Link} from 'react-router-dom'
 import styled from 'styled-components'
+import {Store} from '../../store'
+import {EvolutionCard} from './evolutionCard'
 
 const Container = styled.div`
     height: 80vh;
@@ -84,8 +86,11 @@ const StrengthsContainer = styled(DisplayItem)`
 
 `
 const EvolutionContainer = styled(StrengthsContainer)`
-    line-height: 250px;
+    /* line-height: 250px; */
+    /* margin: auto; */
     font-size: 12pt;
+    text-align: center;
+    cursor: pointer;
 `
 
 const DetailsItem = styled.div`
@@ -96,6 +101,8 @@ const DetailsItem = styled.div`
 
 export const PokeDetail = ({location:{state:{pokeObj}}}) => {
     const {name, num, img, type,  weaknesses, height, weight, prev_evolution, next_evolution} = pokeObj
+    const {pokemon} = useContext(Store)
+        console.log(pokemon)
 
     let previous = prev_evolution ? prev_evolution.map(({name})=>(
     <EvolutionContainer key={name} gridarea="prev">{`Previous: ${name}`}</EvolutionContainer>
@@ -112,8 +119,17 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
     let displayWeakness = weaknesses.map(singleWeakness=> (
         <li key={singleWeakness}>{singleWeakness}</li>
     ))
-   
+    let prevEvo 
+    let nextEvo 
+    if (prev_evolution){
 
+         prevEvo = pokemon[prev_evolution[0].num]
+        // console.log(prevEvo)
+    }
+    if(next_evolution)
+     nextEvo = pokemon[next_evolution[0].num]
+        // console.log(nextEvo)
+    
     return(
         <Container>
             <div gridarea={"link"}>
@@ -147,8 +163,17 @@ export const PokeDetail = ({location:{state:{pokeObj}}}) => {
                 </List>
 
             </StrengthsContainer>
-            {previous}
-            {next}
+            <EvolutionContainer gridarea={"prev"}>
+
+           <EvolutionCard pokeObj={prevEvo} evoType="Previous Evolution" />
+            </EvolutionContainer>
+            <EvolutionContainer gridarea={"next"}>
+
+           <EvolutionCard pokeObj={nextEvo} evoType="Next Evolution"/>
+            </EvolutionContainer>
+
+            {/* {previous}
+            {next} */}
 
         </Container>
 
