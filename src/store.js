@@ -5,24 +5,25 @@ export const Store = createContext({})
 
 export function StoreProvider({children}){
 
-    const [state,updateState] = useState({})
+    const [pokeState, setPokeState] = useState({})
+    const [pokeProps, setPokeProps] = useState([])
 
     const fetchPokemon = async () => {
-        let {data} = await Axios.get(
+        let {data:{pokemon}} = await Axios.get(
             `https://raw.githubusercontent.com/Biuni/PokemonGO-Pokedex/master/pokedex.json`
             )
             
             let pokemonsObj = {}
-            data.pokemon.forEach(pokemon => pokemonsObj[pokemon.num] = pokemon)
-            
-            updateState(pokemonsObj)
+            pokemon.forEach(pokemon => pokemonsObj[pokemon.num] = pokemon)
+            setPokeProps(pokemon)
+            setPokeState(pokemonsObj)
     }
     useEffect(()=>{
-        !Object.keys(state).length  && fetchPokemon()
+        !Object.keys(pokeState).length  && fetchPokemon()
     })
 
     return (
-        <Store.Provider value={{pokemon: state}}>
+        <Store.Provider value={{pokemon: pokeState, pokeList: pokeProps}}>
             {children}
         </Store.Provider>
     )

@@ -6,23 +6,14 @@ import {Container,CheckboxContainer, SelectorsContainer, SearchContainer, Pokemo
 import {Store} from '../../store'
 
 export const IndexView = () => {
-  const [pokeList, setPokeList] = useState([]);
+  // const [pokeList, setPokeList] = useState([]);
   const [renderList, setRenderList] = useState([]);
   const [searchString, setSearchString] = useState("");
   const [types, setTypes] = useState(types1);
   const [weakness, setWeakness] = useState(weaknesses);
-  const pokeStore = useContext(Store)
+  const { pokeList} = useContext(Store)
 
-  // use context to reproduce pokelist previously set via remote api call
-  let tempList = Object.keys(pokeStore.pokemon).map(key => pokeStore.pokemon[key]).sort((a,b)=> {
-    const objA = a.id
-    const objB = b.id 
-    return  objA - objB
-  })
- 
-  useEffect(()=> {
-    !pokeList.length && setPokeList(tempList)
-  }, [pokeList.length, tempList])
+  
 
   useEffect(() => {
     let regex = new RegExp(searchString, "gi");
@@ -32,20 +23,20 @@ export const IndexView = () => {
 
     let filteredList = pokeList.filter((poke) => {
       // Additional filters added by adding another res and a logic test
-      let resA = trueTypes.every((type)=>{
+      let typeFilter = trueTypes.every((type)=>{
         return poke.type.includes(type)
       })
    
-      let resB = trueWeakness.every((weakness) => {
+      let weaknessFilter = trueWeakness.every((weakness) => {
         return poke.weaknesses.includes(weakness);
         
       });
-      let resC = regex.test(poke.name);
+      let nameFilter = regex.test(poke.name);
       
       let resAll = true 
-      if(trueTypes.length) resAll = resAll && resA
-      if (trueWeakness.length) resAll = resAll && resB
-      if (searchString.length) resAll = resAll && resC
+      if(trueTypes.length) resAll = resAll && typeFilter
+      if (trueWeakness.length) resAll = resAll && weaknessFilter
+      if (searchString.length) resAll = resAll && nameFilter
       return resAll
       
     });
@@ -193,3 +184,28 @@ export const IndexView = () => {
   // useEffect(() => {
   //   fetchPokemon();
   // }, []);
+
+  /*
+    Refactored so use pokelist from context value from store
+      - data doesn't change, 
+      - no need to make multiple remote API calls during session
+  */
+  // use context to reproduce pokelist previously set via remote api call
+  // let tempList = Object.keys(pokeStore.pokemon).map(key => pokeStore.pokemon[key]).sort((a,b)=> {
+  //   const objA = a.id
+  //   const objB = b.id 
+  //   return  objA - objB
+  // })
+ 
+  // useEffect(()=> {
+  //   const convertStoreList = () => {
+  //     return Object.keys(pokemon).map(key => pokemon[key]).sort((a,b)=> {
+  //   const objA = a.id
+  //   const objB = b.id 
+  //   return  objA - objB
+  // })
+  
+  // //    }
+
+  //   !pokeList.length && setPokeList(convertStoreList())
+  // }, [pokeList.length, tempList])
