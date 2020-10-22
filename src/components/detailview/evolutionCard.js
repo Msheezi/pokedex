@@ -6,7 +6,7 @@ export const EvolutionCard = ({pokeObj, evoType}) => {
     const {name, img} = pokeObj ? pokeObj : {name: "No Evolution", img:""}
     return (
         <Link  to={{
-            pathname:"/details",
+            pathname:`/details/${name}`,
             state:{
                 pokeObj
             }

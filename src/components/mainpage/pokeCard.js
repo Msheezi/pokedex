@@ -35,7 +35,7 @@ export const PokeCard = ( {pokeObj, pokeObj:{num, name, weaknesses, type, img}})
     return (
         <Link 
             to={{
-            pathname:"/details",
+            pathname:`/details/${name}`,
             state:{
                 pokeObj
             }
